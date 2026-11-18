@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>12-month PFS calculator for stage IV small-cell lung cancer</title>
-<meta name="description" content="Research calculator: treatment-stratified three-variable model for the probability of being progression-free at 12 months in stage IV small-cell lung cancer.">
+<meta name="description" content="Research calculator: treatment-stratified three-variable model for the probability of being progression-free at 12 months in stage IV small-cell lung cancer. English / 中文.">
 <style>
   :root {
     --bg: #f4f6f8; --card: #ffffff; --ink: #1c2530; --muted: #5a6675; --line: #d5dbe2;
@@ -66,85 +66,91 @@
   th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); }
   .tblwrap { overflow-x: auto; margin-bottom: 12px; }
   footer { color: var(--muted); font-size: 0.85rem; margin-top: 22px; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .lang { display: flex; flex: none; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+  .lang button { width: auto; padding: 6px 12px; border-radius: 0; background: var(--field); color: var(--ink); font-weight: 500; }
+  .lang button[aria-pressed=true] { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>12-month progression-free survival in stage IV small-cell lung cancer</h1>
-  <p class="sub">Treatment-stratified three-variable model &middot; research calculator</p>
+  <div class="top">
+    <h1 data-i18n="h1"></h1>
+    <div class="lang" role="group" aria-label="Language / 语言">
+      <button type="button" data-lang="en" lang="en">English</button>
+      <button type="button" data-lang="zh" lang="zh-CN">中文</button>
+    </div>
+  </div>
+  <p class="sub" data-i18n="sub"></p>
 
   <div class="grid">
     <form class="card" id="f" novalidate>
       <fieldset>
-        <legend>First-line treatment</legend>
+        <legend data-i18n="tx"></legend>
         <div class="opts">
-          <label><input type="radio" name="io" value="1" checked> Platinum&ndash;etoposide plus a PD-1/PD-L1 inhibitor</label>
-          <label><input type="radio" name="io" value="0"> Platinum&ndash;etoposide alone</label>
+          <label><input type="radio" name="io" value="1" checked> <span data-i18n="txIO"></span></label>
+          <label><input type="radio" name="io" value="0"> <span data-i18n="txChemo"></span></label>
         </div>
       </fieldset>
 
       <fieldset>
-        <legend>Metastatic sites at baseline</legend>
-        <p class="hint">Tick every organ site involved. Sites are counted, not individual lesions.</p>
+        <legend data-i18n="sites"></legend>
+        <p class="hint" data-i18n="sitesHint"></p>
         <div class="opts two">
-          <label><input type="checkbox" name="site" value="liver"> Liver</label>
-          <label><input type="checkbox" name="site" value="lung"> Lung</label>
-          <label><input type="checkbox" name="site" value="pleura"> Pleura</label>
-          <label><input type="checkbox" name="site" value="brain"> Brain</label>
-          <label><input type="checkbox" name="site" value="bone"> Bone</label>
-          <label><input type="checkbox" name="site" value="adrenal"> Adrenal gland</label>
-          <label><input type="checkbox" name="site" value="other"> Other</label>
+          <label><input type="checkbox" name="site" value="liver"> <span data-i18n="liver"></span></label>
+          <label><input type="checkbox" name="site" value="lung"> <span data-i18n="lung"></span></label>
+          <label><input type="checkbox" name="site" value="pleura"> <span data-i18n="pleura"></span></label>
+          <label><input type="checkbox" name="site" value="brain"> <span data-i18n="brain"></span></label>
+          <label><input type="checkbox" name="site" value="bone"> <span data-i18n="bone"></span></label>
+          <label><input type="checkbox" name="site" value="adrenal"> <span data-i18n="adrenal"></span></label>
+          <label><input type="checkbox" name="site" value="other"> <span data-i18n="other"></span></label>
         </div>
-        <p class="hint">Pleura includes malignant pleural effusion. Other includes pericardial involvement and distant lymph nodes; several &ldquo;other&rdquo; sites count once.</p>
+        <p class="hint" data-i18n="sitesNote"></p>
       </fieldset>
 
       <fieldset>
-        <label class="lab" for="ldh">Serum LDH (U/L)</label>
-        <p class="hint">Closest value within 28 days before the start of first-line treatment.</p>
-        <input type="number" id="ldh" inputmode="decimal" min="1" max="20000" step="any" placeholder="e.g. 230">
-        <label class="inline"><input type="checkbox" id="ldhna"> LDH not available</label>
+        <label class="lab" for="ldh" data-i18n="ldh"></label>
+        <p class="hint" data-i18n="ldhHint"></p>
+        <input type="number" id="ldh" inputmode="decimal" min="1" max="20000" step="any">
+        <label class="inline"><input type="checkbox" id="ldhna"> <span data-i18n="ldhNA"></span></label>
       </fieldset>
 
-      <button type="submit">Calculate</button>
+      <button type="submit" data-i18n="calc"></button>
       <p class="err" id="err" role="alert"></p>
     </form>
 
     <div class="card about">
-      <div class="result" id="res" aria-live="polite">
-        <div class="ctx">Enter the three predictors and press Calculate.</div>
-      </div>
+      <div class="result" id="res" aria-live="polite"></div>
 
-      <p class="warn"><strong>For research use only.</strong> The model is prognostic. It must not be used to select or withhold immunotherapy, and it does not replace clinical judgement.</p>
+      <p class="warn" data-i18n="warn"></p>
 
-      <h2>Who it applies to</h2>
-      <p>Adults with stage IV (M1) small-cell lung cancer starting first-line platinum&ndash;etoposide with or without a PD-1/PD-L1 inhibitor. The estimate is made before treatment starts.</p>
+      <h2 data-i18n="whoH"></h2>
+      <p data-i18n="whoP"></p>
 
-      <h2>How the estimate is calculated</h2>
-      <p>Predicted 12-month PFS = S<sub>0</sub><sup>exp(&Sigma;&beta;(x &minus; x&#772;))</sup>, with a separate baseline S<sub>0</sub> for each treatment.</p>
+      <h2 data-i18n="howH"></h2>
+      <p data-i18n="howP"></p>
       <div class="tblwrap">
         <table>
-          <thead><tr><th>Predictor</th><th>&beta;</th><th>Mean (x&#772;)</th></tr></thead>
+          <thead><tr><th data-i18n="thPred"></th><th>&beta;</th><th data-i18n="thMean"></th></tr></thead>
           <tbody>
-            <tr><td>Liver metastasis (yes = 1)</td><td>0.4792</td><td>0.2877</td></tr>
-            <tr><td>Number of metastatic sites</td><td>0.1598</td><td>1.5507</td></tr>
+            <tr><td data-i18n="tdLiver"></td><td>0.4792</td><td>0.2877</td></tr>
+            <tr><td data-i18n="tdN"></td><td>0.1598</td><td>1.5507</td></tr>
             <tr><td>ln(LDH/250)</td><td>0.3257</td><td>0.0468</td></tr>
           </tbody>
         </table>
       </div>
       <ul>
-        <li>S<sub>0</sub>(12 months) = 0.0896 for chemotherapy and 0.1871 for chemo-immunotherapy.</li>
-        <li>LDH below 50 U/L is treated as 50 U/L. If LDH is not available, ln(LDH/250) is set to &minus;0.0463.</li>
-        <li>Risk groups use fixed thresholds of predicted 12-month PFS: low risk &ge;25%, intermediate risk 10% to &lt;25%, high risk &lt;10%.</li>
+        <li data-i18n="li1"></li>
+        <li data-i18n="li2"></li>
+        <li data-i18n="li3"></li>
       </ul>
 
-      <h2>Evidence and limits</h2>
-      <p>The model was developed in 365 patients at one centre in China and validated in a later cohort from the same centre (203 patients) and in a small cohort from a second centre (61 patients). LDH was measured by the IFCC lactate-to-pyruvate method (reference interval 120&ndash;250 U/L); values from other assays may not be comparable. Larger external validation is needed before use at other centres.</p>
+      <h2 data-i18n="evH"></h2>
+      <p data-i18n="evP"></p>
     </div>
   </div>
 
-  <footer>
-    Calculations run in your browser; nothing you enter is sent or stored. Model version 3.3 (locked 10 November 2026).
-  </footer>
+  <footer data-i18n="foot"></footer>
 </div>
 
 <script>
@@ -173,15 +179,140 @@ function riskGroup(p) {
 }
 /* MODEL-END */
 
+var I18N = {
+  en: {
+    title: '12-month PFS calculator for stage IV small-cell lung cancer',
+    h1: '12-month progression-free survival in stage IV small-cell lung cancer',
+    sub: 'Treatment-stratified three-variable model &middot; research calculator',
+    tx: 'First-line treatment',
+    txIO: 'Platinum&ndash;etoposide plus a PD-1/PD-L1 inhibitor',
+    txChemo: 'Platinum&ndash;etoposide alone',
+    sites: 'Metastatic sites at baseline',
+    sitesHint: 'Tick every organ site involved. Sites are counted, not individual lesions.',
+    liver: 'Liver', lung: 'Lung', pleura: 'Pleura', brain: 'Brain', bone: 'Bone', adrenal: 'Adrenal gland', other: 'Other',
+    sitesNote: 'Pleura includes malignant pleural effusion. Other includes pericardial involvement and distant lymph nodes; several &ldquo;other&rdquo; sites count once.',
+    ldh: 'Serum LDH (U/L)',
+    ldhHint: 'Closest value within 28 days before the start of first-line treatment.',
+    ldhPh: 'e.g. 230',
+    ldhNA: 'LDH not available',
+    calc: 'Calculate',
+    empty: 'Enter the three predictors and press Calculate.',
+    errSite: 'Tick at least one metastatic site (the model applies to stage IV disease).',
+    errLdh: 'Enter LDH in U/L, or tick “LDH not available”.',
+    resLabel: 'Predicted probability of being progression-free at 12 months',
+    gLow: 'Low risk', gMid: 'Intermediate risk', gHigh: 'High risk',
+    sumIO: 'Chemo-immunotherapy', sumChemo: 'Chemotherapy alone',
+    site1: ' site', siteN: ' sites', withLiver: ', liver involved', noLiver: ', no liver metastasis',
+    ldhNone: 'LDH not available',
+    obs: function (pct) { return 'In the temporal validation cohort, ' + pct + ' of patients in this risk group were progression-free at 12 months.'; },
+    warn: '<strong>For research use only.</strong> The model is prognostic. It must not be used to select or withhold immunotherapy, and it does not replace clinical judgement.',
+    whoH: 'Who it applies to',
+    whoP: 'Adults with stage IV (M1) small-cell lung cancer starting first-line platinum&ndash;etoposide with or without a PD-1/PD-L1 inhibitor. The estimate is made before treatment starts.',
+    howH: 'How the estimate is calculated',
+    howP: 'Predicted 12-month PFS = S<sub>0</sub><sup>exp(&Sigma;&beta;(x &minus; x&#772;))</sup>, with a separate baseline S<sub>0</sub> for each treatment.',
+    thPred: 'Predictor', thMean: 'Mean (x&#772;)',
+    tdLiver: 'Liver metastasis (yes = 1)', tdN: 'Number of metastatic sites',
+    li1: 'S<sub>0</sub>(12 months) = 0.0896 for chemotherapy and 0.1871 for chemo-immunotherapy.',
+    li2: 'LDH below 50 U/L is treated as 50 U/L. If LDH is not available, ln(LDH/250) is set to &minus;0.0463.',
+    li3: 'Risk groups use fixed thresholds of predicted 12-month PFS: low risk &ge;25%, intermediate risk 10% to &lt;25%, high risk &lt;10%.',
+    evH: 'Evidence and limits',
+    evP: 'The model was developed in 365 patients at one centre in China and validated in a later cohort from the same centre (203 patients) and in a small cohort from a second centre (61 patients). LDH was measured by the IFCC lactate-to-pyruvate method (reference interval 120&ndash;250 U/L); values from other assays may not be comparable. Larger external validation is needed before use at other centres.',
+    foot: 'Calculations run in your browser; nothing you enter is sent or stored. Model version 3.3 (locked 10 November 2026).'
+  },
+  zh: {
+    title: 'IV 期小细胞肺癌 12 个月无进展生存计算器',
+    h1: 'IV 期小细胞肺癌 12 个月无进展生存概率',
+    sub: '按治疗分层的三变量模型 &middot; 研究用计算器',
+    tx: '一线治疗方案',
+    txIO: '铂类 + 依托泊苷联合 PD-1/PD-L1 抑制剂',
+    txChemo: '单用铂类 + 依托泊苷',
+    sites: '基线转移部位',
+    sitesHint: '勾选所有受累的器官部位。按部位计数,不按病灶个数计数。',
+    liver: '肝', lung: '肺', pleura: '胸膜', brain: '脑', bone: '骨', adrenal: '肾上腺', other: '其他',
+    sitesNote: '胸膜包括恶性胸腔积液。其他包括心包受累和远处淋巴结;多个“其他”部位只计 1 个。',
+    ldh: '血清 LDH(U/L)',
+    ldhHint: '一线治疗开始前 28 天内、距开始日最近的一次检测值。',
+    ldhPh: '例如 230',
+    ldhNA: '未检测 LDH',
+    calc: '计算',
+    empty: '填写三项预测因素后点击“计算”。',
+    errSite: '请至少勾选一个转移部位(本模型适用于 IV 期患者)。',
+    errLdh: '请填写 LDH(U/L),或勾选“未检测 LDH”。',
+    resLabel: '预测的 12 个月无进展概率',
+    gLow: '低危', gMid: '中危', gHigh: '高危',
+    sumIO: '化疗联合免疫', sumChemo: '单纯化疗',
+    site1: ' 个转移部位', siteN: ' 个转移部位', withLiver: ',有肝转移', noLiver: ',无肝转移',
+    ldhNone: '未检测 LDH',
+    obs: function (pct) { return '在时间验证队列中,该风险组 ' + pct + ' 的患者在 12 个月时无进展。'; },
+    warn: '<strong>仅供研究使用。</strong>本模型为预后模型,不得用于决定是否使用免疫治疗,也不能替代临床判断。',
+    whoH: '适用人群',
+    whoP: '开始一线铂类 + 依托泊苷治疗(联合或不联合 PD-1/PD-L1 抑制剂)的 IV 期(M1)小细胞肺癌成人患者。预测在治疗开始前进行。',
+    howH: '计算方法',
+    howP: '预测的 12 个月无进展生存率 = S<sub>0</sub><sup>exp(&Sigma;&beta;(x &minus; x&#772;))</sup>,两种治疗方案各有一个基线值 S<sub>0</sub>。',
+    thPred: '预测因素', thMean: '均值(x&#772;)',
+    tdLiver: '肝转移(有 = 1)', tdN: '转移部位数',
+    li1: 'S<sub>0</sub>(12 个月):单纯化疗 0.0896,化疗联合免疫 0.1871。',
+    li2: 'LDH 低于 50 U/L 时按 50 U/L 计算。未检测 LDH 时,ln(LDH/250) 取 &minus;0.0463。',
+    li3: '风险分组采用固定阈值(预测的 12 个月无进展概率):低危 &ge;25%,中危 10% 至 &lt;25%,高危 &lt;10%。',
+    evH: '证据与局限',
+    evP: '模型在中国一家中心的 365 例患者中建立,在同一中心较晚入组的队列(203 例)和另一家中心的小样本队列(61 例)中验证。LDH 采用 IFCC 乳酸&rarr;丙酮酸法测定(参考区间 120&ndash;250 U/L),其他检测方法的结果可能不可比。在其他中心使用前,需要更大样本的外部验证。',
+    foot: '计算在浏览器本地完成,填写的内容不会上传或保存。模型版本 3.3(2026 年 11 月 10 日锁定)。'
+  }
+};
+
 (function () {
   var GROUP = {
-    low: { label: 'Low risk', cls: 'low', obs: '29%' },
-    intermediate: { label: 'Intermediate risk', cls: 'mid', obs: '14%' },
-    high: { label: 'High risk', cls: 'high', obs: '5%' }
+    low: { key: 'gLow', cls: 'low', obs: '29%' },
+    intermediate: { key: 'gMid', cls: 'mid', obs: '14%' },
+    high: { key: 'gHigh', cls: 'high', obs: '5%' }
   };
   var form = document.getElementById('f'), err = document.getElementById('err'),
       res = document.getElementById('res'), ldhEl = document.getElementById('ldh'),
       naEl = document.getElementById('ldhna');
+  var lang = 'en', last = null, errKey = null;
+
+  try {
+    var saved = localStorage.getItem('lang');
+    if (saved === 'en' || saved === 'zh') lang = saved;
+    else if (/^zh/i.test(navigator.language || '')) lang = 'zh';
+  } catch (e) {
+    if (/^zh/i.test(navigator.language || '')) lang = 'zh';
+  }
+
+  function render() {
+    var T = I18N[lang];
+    if (!last) { res.innerHTML = '<div class="ctx">' + T.empty + '</div>'; return; }
+    var g = GROUP[riskGroup(last.p)];
+    res.innerHTML =
+      '<div class="ctx">' + T.resLabel + '</div>' +
+      '<div class="big ' + g.cls + '">' + (last.p * 100).toFixed(1) + '%</div>' +
+      '<div class="grp ' + g.cls + '">' + T[g.key] + '</div>' +
+      '<div class="ctx">' + (last.io === 1 ? T.sumIO : T.sumChemo) + ' &middot; ' +
+        last.n + (last.n === 1 ? T.site1 : T.siteN) + (last.liver ? T.withLiver : T.noLiver) + ' &middot; ' +
+        (last.ldh === null ? T.ldhNone : 'LDH ' + last.ldh + ' U/L') + '</div>' +
+      '<div class="ctx">' + T.obs(g.obs) + '</div>';
+  }
+
+  function setLang(l) {
+    lang = l;
+    var T = I18N[lang];
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.title = T.title;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-i18n]'), function (el) {
+      el.innerHTML = T[el.getAttribute('data-i18n')];
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-lang]'), function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
+    });
+    ldhEl.placeholder = T.ldhPh;
+    err.textContent = errKey ? T[errKey] : '';
+    render();
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-lang]'), function (b) {
+    b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); });
+  });
 
   naEl.addEventListener('change', function () {
     ldhEl.disabled = naEl.checked;
@@ -190,30 +321,22 @@ function riskGroup(p) {
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    err.textContent = '';
+    errKey = null; err.textContent = '';
     var io = Number(form.elements.io.value);
     var sites = Array.prototype.filter.call(form.elements.site, function (c) { return c.checked; });
     var n = sites.length;
     var liver = sites.some(function (c) { return c.value === 'liver'; }) ? 1 : 0;
-    if (n === 0) { err.textContent = 'Tick at least one metastatic site (the model applies to stage IV disease).'; return; }
+    if (n === 0) { errKey = 'errSite'; err.textContent = I18N[lang].errSite; return; }
     var ldh = null;
     if (!naEl.checked) {
       ldh = parseFloat(ldhEl.value);
-      if (!isFinite(ldh) || ldh <= 0 || ldh > 20000) {
-        err.textContent = 'Enter LDH in U/L, or tick “LDH not available”.'; return;
-      }
+      if (!isFinite(ldh) || ldh <= 0 || ldh > 20000) { errKey = 'errLdh'; err.textContent = I18N[lang].errLdh; return; }
     }
-    var p = predictPFS12(io, liver, n, ldh), g = GROUP[riskGroup(p)];
-    res.innerHTML =
-      '<div class="ctx">Predicted probability of being progression-free at 12 months</div>' +
-      '<div class="big ' + g.cls + '">' + (p * 100).toFixed(1) + '%</div>' +
-      '<div class="grp ' + g.cls + '">' + g.label + '</div>' +
-      '<div class="ctx">' + (io === 1 ? 'Chemo-immunotherapy' : 'Chemotherapy alone') + ' &middot; ' +
-        n + (n === 1 ? ' site' : ' sites') + (liver ? ', liver involved' : ', no liver metastasis') + ' &middot; ' +
-        (ldh === null ? 'LDH not available' : 'LDH ' + ldh + ' U/L') + '</div>' +
-      '<div class="ctx">In the temporal validation cohort, ' + g.obs +
-        ' of patients in this risk group were progression-free at 12 months.</div>';
+    last = { io: io, liver: liver, n: n, ldh: ldh, p: predictPFS12(io, liver, n, ldh) };
+    render();
   });
+
+  setLang(lang);
 })();
 </script>
 </body>
